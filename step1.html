@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card card--interactive" data-page="step1">
+        <h2 class="card__heading">1. A simple question.</h2>
+        <p class="card__question">Which of these is not a planet? 🤔</p>
+        <div class="choice-grid">
+            <button class="choice-button" data-correct="false" data-next="step2.html">Mars</button>
+            <button class="choice-button" data-correct="false" data-next="step2.html">Venus</button>
+            <button class="choice-button" data-correct="true" data-next="step2.html">Pluto</button>
+            <button class="choice-button" data-correct="false" data-next="step2.html">Saturn</button>
+        </div>
+    </div>
+    <script src="app.js" defer></script>
+</body>
+</html>
