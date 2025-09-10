@@ -4,7 +4,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Configuration Variables ---
-    // Change this value before publishing!
     const OWNER_PHONE = '919801549304'; // e.g., '1234567890' (without + or country code for wa.me)
 
     const currentPage = document.body.querySelector('.card').dataset.page;
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.opacity = '0';
             setTimeout(() => {
                 window.location.href = url;
-            }, 300); // Wait for transition to finish
+            }, 300);
         } else {
             window.location.href = url;
         }
@@ -31,20 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 🎵 Music Controls ---
+    // --- 🎵 Background Music ---
     const music = document.getElementById('bgMusic');
-    const musicToggle = document.getElementById('musicToggle');
-
-    if (music && musicToggle) {
-        music.volume = 0.5; // softer music
-        musicToggle.addEventListener('click', () => {
-            if (music.paused) {
-                music.play();
-                musicToggle.textContent = "⏸ Pause Music";
-            } else {
-                music.pause();
-                musicToggle.textContent = "🎵 Play Music";
-            }
+    if (music) {
+        music.volume = 0.5; // gentle volume
+        music.play().catch(() => {
+            // Some browsers block autoplay; will play on first user interaction
         });
     }
 
@@ -84,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             gridCells.forEach(cell => {
                 cell.addEventListener('click', () => {
                     if (cell.dataset.next) {
-                        // Correct cell found
                         cell.textContent = '✨';
                         cell.classList.add('grid-cell--found');
                         setTimeout(() => {
@@ -99,10 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const thumb = document.querySelector('.slider-thumb');
             const fill = document.querySelector('.slider-fill');
             let isDragging = false;
-            
+
             if (thumb && fill) {
-                thumb.addEventListener('mousedown', (e) => { isDragging = true; });
-                thumb.addEventListener('touchstart', (e) => { isDragging = true; });
+                thumb.addEventListener('mousedown', () => { isDragging = true; });
+                thumb.addEventListener('touchstart', () => { isDragging = true; });
 
                 document.addEventListener('mouseup', () => { isDragging = false; });
                 document.addEventListener('touchend', () => { isDragging = false; });
@@ -154,9 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
 
         case 'final':
-            // Use GSAP to type out the text
             const typewriterElements = document.querySelectorAll('.type-effect');
-            typewriterElements.forEach((el) => {
+            typewriterElements.forEach(el => {
                 const text = el.dataset.text;
                 const delay = el.dataset.delay ? parseFloat(el.dataset.delay) : 0;
                 gsap.to(el, {
@@ -173,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const yesButton = document.getElementById('yesButton');
             const noButton = document.getElementById('noButton');
-            
+
             if (yesButton) {
                 yesButton.addEventListener('click', () => {
                     sessionStorage.setItem('inviteAnswer', 'yes');
@@ -191,34 +180,30 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'yes':
             const answer = sessionStorage.getItem('inviteAnswer');
             if (answer !== 'yes') {
-                navigate('index.html'); // Redirect if page accessed directly
+                navigate('index.html');
                 return;
             }
 
-            // Share button setup
             const whatsappShare = document.getElementById('whatsappShare');
-            
-            // The new personalized message, correctly encoded for the URL
             const message = encodeURIComponent("Iske aage to aap ko hi likhna hoga, Thanks for agreeing BTW");
-            
+
             if (whatsappShare && OWNER_PHONE !== 'YOUR_PHONE_NUMBER') {
                 whatsappShare.href = `https://wa.me/${OWNER_PHONE}?text=${message}`;
-            } else {
+            } else if (whatsappShare) {
                 whatsappShare.href = '#';
                 whatsappShare.onclick = (e) => { e.preventDefault(); alert("Please configure the OWNER_PHONE variable in app.js"); };
             }
-            
             break;
-            
+
         case 'no':
             const noAnswer = sessionStorage.getItem('inviteAnswer');
             if (noAnswer !== 'no') {
-                navigate('index.html'); // Redirect if page accessed directly
+                navigate('index.html');
                 return;
             }
             break;
     }
-    
+
     // Initial card reveal
     showCard();
 });
