@@ -31,6 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // --- 🎵 Music Controls ---
+    const music = document.getElementById('bgMusic');
+    const musicToggle = document.getElementById('musicToggle');
+
+    if (music && musicToggle) {
+        music.volume = 0.5; // softer music
+        musicToggle.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                musicToggle.textContent = "⏸ Pause Music";
+            } else {
+                music.pause();
+                musicToggle.textContent = "🎵 Play Music";
+            }
+        });
+    }
+
     // --- Page-specific logic ---
     switch (currentPage) {
         case 'index':
