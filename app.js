@@ -30,12 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 🎵 Background Music ---
+    // --- 🎵 Background Music Autoplay ---
     const music = document.getElementById('bgMusic');
     if (music) {
         music.volume = 0.5; // gentle volume
+        music.loop = true;
+
+        // Try autoplay immediately
         music.play().catch(() => {
-            // Some browsers block autoplay; will play on first user interaction
+            // Autoplay blocked? Play on first user interaction
+            const playMusicOnInteraction = () => {
+                music.play().catch(() => {});
+                document.removeEventListener('click', playMusicOnInteraction);
+                document.removeEventListener('touchstart', playMusicOnInteraction);
+            };
+            document.addEventListener('click', playMusicOnInteraction, { once: true });
+            document.addEventListener('touchstart', playMusicOnInteraction, { once: true });
+        });
+
+        // Pause/resume on tab visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) music.pause();
+            else music.play().catch(() => {});
         });
     }
 
