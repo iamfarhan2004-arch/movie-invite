@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>An Invitation</title>
+    <title>The Reveal</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
-    <div class="card card--index" data-page="index">
-        <h1 class="card__title">A Little Invitation</h1>
-        <p class="card__subtitle">For you.</p>
-        <button class="card__button" id="startButton">Begin</button>
+    <div class="card card--final" data-page="final">
+        <h1 class="card__title type-effect" data-text="Cinema dekhne chalogi?"></h1>
+        <p class="card__copy type-effect" data-delay="0.5" data-text="Kuch Tickets lagi hai haath me. It would be nice if you say so otherwise NO PIRABLEM."></p>
+        <div class="final-actions">
+            <button class="card__button card__button--yes" id="yesButton">Okay son not a Problem.</button>
+            <button class="card__button card__button--no" id="noButton">Time Nakko.</button>
+        </div>
     </div>
 
     <!-- 🎵 Background Music -->
