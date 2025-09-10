@@ -76,6 +76,7 @@
       background: #eee;
       border-radius: 10px;
       margin: 40px auto;
+      touch-action: none;
     }
     .slider-fill {
       position: absolute;
@@ -141,14 +142,12 @@
 </head>
 <body>
 
-  <!-- Page 1: Intro -->
   <div class="card active" id="index">
     <h1>A Little Invitation</h1>
     <p>For you.</p>
     <button id="startButton">Begin</button>
   </div>
 
-  <!-- Step 1 -->
   <div class="card" id="step1">
     <h2>1. A simple question.</h2>
     <p>Which of these is not a planet? 🤔</p>
@@ -160,13 +159,11 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
   <div class="card" id="step2">
     <h2>2. Find the hidden star ✨</h2>
     <div class="grid" id="starGrid"></div>
   </div>
 
-  <!-- Step 3 -->
   <div class="card" id="step3">
     <h2>3. Drag the slider to the right.</h2>
     <div class="slider-container" id="slider">
@@ -175,7 +172,6 @@
     </div>
   </div>
 
-  <!-- Step 4 -->
   <div class="card" id="step4">
     <h2>4. Tap the button 5 times.</h2>
     <div class="tap-container">
@@ -183,7 +179,6 @@
     </div>
   </div>
 
-  <!-- Final -->
   <div class="card" id="final">
     <h1>Cinema dekhne chalogi?</h1>
     <p>Kuch Tickets lagi hai haath me. It would be nice if you say so otherwise NO PIRABLEM.</p>
@@ -191,7 +186,6 @@
     <button id="noButton">Time Nakko.</button>
   </div>
 
-  <!-- Yes Page -->
   <div class="card" id="yesPage">
     <h2>Shabaash! 🎉</h2>
     <p>Kripya Aage ki jaankari ke liye Hame Sampark kare 😀!</p>
@@ -200,7 +194,6 @@
     </a>
   </div>
 
-  <!-- No Page -->
   <div class="card" id="noPage">
     <h2>NO PIRABLEM.</h2>
     <p>At least kuch naya ho gaya aaj.</p>
@@ -212,7 +205,6 @@
     <button onclick="showPage('index')">Play Again</button>
   </div>
 
-  <!-- 🎵 Music -->
   <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
   </audio>
@@ -259,17 +251,32 @@
     const slider = document.getElementById('slider');
     let dragging = false;
 
+    const handleMove = (e) => {
+      if (!dragging) return;
+      const clientX = e.clientX || e.touches[0].clientX;
+      let rect = slider.getBoundingClientRect();
+      let offset = clientX - rect.left;
+      offset = Math.max(0, Math.min(offset, rect.width));
+      sliderThumb.style.left = (offset - 15) + 'px';
+      sliderFill.style.width = offset + 'px';
+      if (offset >= rect.width - 20) {
+        dragging = false;
+        setTimeout(() => showPage('step4'), 500);
+      }
+    };
+
+    // Mouse Events
     sliderThumb.addEventListener('mousedown', () => dragging = true);
     document.addEventListener('mouseup', () => dragging = false);
-    document.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-      let rect = slider.getBoundingClientRect();
-      let offset = e.clientX - rect.left;
-      offset = Math.max(0, Math.min(offset, rect.width));
-      sliderThumb.style.left = (offset-15) + 'px';
-      sliderFill.style.width = offset + 'px';
-      if (offset >= rect.width - 20) setTimeout(() => showPage('step4'), 500);
+    document.addEventListener('mousemove', handleMove);
+
+    // Touch Events
+    sliderThumb.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dragging = true;
     });
+    document.addEventListener('touchend', () => dragging = false);
+    document.addEventListener('touchmove', handleMove);
 
     // Step4 (Tap 5 times)
     let taps = 0;
